@@ -7,6 +7,7 @@
 
 import React from 'react';
 import type {PropsWithChildren} from 'react';
+import plants from './assets/plants.json';
 import {
   SafeAreaView,
   ScrollView,
@@ -17,13 +18,7 @@ import {
   View,
 } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import {Colors, Header} from 'react-native/Libraries/NewAppScreen';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -72,24 +67,34 @@ function App(): React.JSX.Element {
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
         <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
+        <View style={styles.table}>
+          <View style={styles.header}>
+            <Text style={styles.cell}>Név</Text>
+            <Text style={styles.cell}>Fajta</Text>
+            <Text style={styles.cell}>Család</Text>
+            <Text style={styles.cell}>Feladat</Text>
+          </View>
+          {plants
+            .map(p => {
+              return {key: p[0], vals: p};
+            })
+            .map((plant, i) => (
+              <View
+                key={plant.key}
+                style={{
+                  ...styles.row,
+                  backgroundColor: i % 2 ? '#efefef' : '#ffffff',
+                }}>
+                <View style={styles.cell}>
+                  <Text style={{fontWeight: 'bold'}}>{plant.vals[0]}</Text>
+                  <Text style={{fontSize: 11}}>{plant.vals[1]}</Text>
+                </View>
+
+                <Text style={styles.cell}>{plant.vals[2]}</Text>
+                <Text style={styles.cell}>{plant.vals[3]}</Text>
+                <Text style={styles.cell}>{plant.vals[4]}</Text>
+              </View>
+            ))}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -112,6 +117,29 @@ const styles = StyleSheet.create({
   },
   highlight: {
     fontWeight: '700',
+  },
+  table: {
+    flex: 1,
+    flexDirection: 'column',
+    backgroundColor: '#ffffff',
+    marginTop: 8,
+  },
+  row: {
+    flex: 1,
+    paddingTop: 8,
+    flexDirection: 'row',
+  },
+  header: {
+    flex: 1,
+    paddingTop: 8,
+    flexDirection: 'row',
+    borderBottomColor: '#000000',
+    borderBottomWidth: 1,
+  },
+  cell: {
+    flex: 1,
+    marginLeft: 16,
+    flexDirection: 'column',
   },
 });
 
